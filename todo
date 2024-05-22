@@ -1,0 +1,17 @@
+0. Add column boolean "isAdmin", and "role" to users table in DB
+
+
+Autorizzazione: Gestire i ruoli degli utenti (es. amministratori e utenti normali) e le relative autorizzazioni.
+Profili Utente: Aggiungere funzionalità per visualizzare e modificare i profili utente.
+
+4. Sicurezza e Validazione
+Sicurezza: Configurare la sicurezza per proteggere le API (es. Spring Security).
+Validazione: Aggiungere validazione per i dati degli utenti, dei post e dei commenti.
+5. Test
+Test Unitari: Scrivere test unitari per le singole componenti (controller, servizi, repository).
+Test di Integrazione: Scrivere test di integrazione per verificare il funzionamento delle diverse parti dell'applicazione insieme.
+6. Documentazione
+API Documentation: Usare strumenti come Swagger per documentare le API.
+README: Aggiornare il file README.md con istruzioni per il setup e l'uso del progetto.
+Struttura Generale delle Classi
+Oltre alle classi già create, dovrai aggiungere:
