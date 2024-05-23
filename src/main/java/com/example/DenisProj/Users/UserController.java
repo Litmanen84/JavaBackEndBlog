@@ -74,7 +74,7 @@ public class UserController {
   @PostMapping("/login")
     public User loginUser(@RequestBody LoginRequest loginRequest) {
         try {
-            return service.loginUser(loginRequest.getUsername(), loginRequest.getEmail(), loginRequest.getPassword());
+            return service.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
         } catch (Exception e) {
             throw new ResponseStatusException(
                 HttpStatus.UNAUTHORIZED, e.getMessage(), e);
