@@ -40,7 +40,7 @@ public class UserController {
       return repository.findById(id)
           .orElseThrow(() -> new UserNotFoundException(id));
   }
-  @CrossOrigin
+
   @PutMapping("/{id}")
   public User updateUser(@RequestBody User newUser, @PathVariable Long id) {
     
@@ -49,7 +49,7 @@ public class UserController {
         user.setUsername(newUser.getUsername());
         user.setEmail(newUser.getEmail());
         user.setPassword(newUser.getPassword());
-        user.setIsAdmin(newUser.getIsAdmin());
+        user.setIs_admin(newUser.getIs_admin());
         return repository.save(user);
       })
       .orElseGet(() -> {
@@ -62,7 +62,7 @@ public class UserController {
   void deleteUser(@PathVariable Long id) {
     repository.deleteById(id);
   }
-  @CrossOrigin
+
   @PostMapping("/register")
   public User registerUser(@RequestBody RegisterRequest registerRequest) {
     try {

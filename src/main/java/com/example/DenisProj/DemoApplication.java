@@ -10,7 +10,6 @@ public class DemoApplication {
 
         String port = System.getenv("PORT");
         if (port == null || port.isEmpty()) {
-            // Porta predefinita, ad esempio 8080
             port = "8080";
         }
 

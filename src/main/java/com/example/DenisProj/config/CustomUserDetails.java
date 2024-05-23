@@ -6,14 +6,14 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Collection;
 
 public class CustomUserDetails extends User {
-    private final boolean isAdmin;
+    private final boolean is_admin;
 
-    public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities, boolean isAdmin) {
+    public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities, boolean is_admin) {
         super(username, password, authorities);
-        this.isAdmin = isAdmin;
+        this.is_admin = is_admin;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public boolean is_admin() {
+        return is_admin;
     }
 }

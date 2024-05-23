@@ -11,6 +11,7 @@ import java.util.Objects;
 
 
 @Entity
+@Table(name = "users")
 public class User implements UserDetails{
 
   @Id
@@ -27,16 +28,16 @@ public class User implements UserDetails{
   private String email;
 
   @Column(nullable = false)
-  private boolean isAdmin;
+  private boolean is_admin;
 
   User() {}
 
-  User(String username, String password, String email, boolean isAdmin) {
+  User(String username, String password, String email, boolean is_admin) {
 
     this.username = username;
     this.password = password;
     this.email = email;
-    this.isAdmin = isAdmin;
+    this.is_admin = is_admin;
   }
 
   public Long getId() {
@@ -55,8 +56,8 @@ public class User implements UserDetails{
     return this.email;
   }
 
-  public boolean getIsAdmin() {
-    return this.isAdmin;
+  public boolean getIs_admin() {
+    return this.is_admin;
 }
 
   public void setId(Long id) {
@@ -78,13 +79,13 @@ public class User implements UserDetails{
     this.email = email;
 }
 
-  public void setIsAdmin(boolean isAdmin) {
-    this.isAdmin = isAdmin;
+  public void setIs_admin(boolean is_admin) {
+    this.is_admin = is_admin;
   }
 
   @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(isAdmin ? "ROLE_ADMIN" : "ROLE_USER"));
+        return Collections.singletonList(new SimpleGrantedAuthority(is_admin ? "ROLE_ADMIN" : "ROLE_USER"));
     }
 
     @Override
@@ -116,17 +117,17 @@ public class User implements UserDetails{
         User user = (User) o;
         return Objects.equals(this.id, user.id) && Objects.equals(this.username, user.username)
                 && Objects.equals(this.password, user.password) && Objects.equals(this.email, user.email)
-                && Objects.equals(this.isAdmin, user.isAdmin);
+                && Objects.equals(this.is_admin, user.is_admin);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.username, this.password, this.email, this.isAdmin);
+        return Objects.hash(this.id, this.username, this.password, this.email, this.is_admin);
     }
 
     @Override
     public String toString() {
         return "User{" + "id=" + this.id + ", username='" + this.username + '\'' + ", password='" + this.password + '\''
-                + ", email='" + this.email + '\'' + ", isAdmin=" + this.isAdmin + '}';
+                + ", email='" + this.email + '\'' + ", is_admin=" + this.is_admin + '}';
     }
 }

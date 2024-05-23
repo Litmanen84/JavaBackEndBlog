@@ -34,7 +34,7 @@ public class PostController {
     public Post createPost(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Post post) {
         if (userDetails instanceof CustomUserDetails) {
             CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
-            if (!customUserDetails.isAdmin()) {
+            if (!customUserDetails.is_admin()) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can create posts");
             }
         } else {
