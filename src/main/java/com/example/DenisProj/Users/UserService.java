@@ -27,7 +27,7 @@ public class UserService {
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword(crypt.encode(password));
-        user.setIsAdmin(false);
+        // user.setIsAdmin(false);
         return repository.save(user);
     }
 
