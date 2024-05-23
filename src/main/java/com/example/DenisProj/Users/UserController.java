@@ -62,9 +62,9 @@ public class UserController {
   }
 
   @PostMapping("/register")
-  public User registerUser(@RequestBody User user) {
+  public User registerUser(@RequestBody RegisterRequest registerRequest) {
     try {
-      return service.registerUser(user);
+      return service.registerUser(registerRequest.getUsername(), registerRequest.getEmail(), registerRequest.getPassword());
     } catch (Exception e) {
       throw new ResponseStatusException(
         HttpStatus.BAD_REQUEST, e.getMessage(), e);

@@ -14,21 +14,24 @@ public class UserService {
     @Autowired
     public PasswordEncoder crypt;
 
-    public User registerUser(User user) throws Exception {
-        if (repository.findByEmail(user.getEmail()).isPresent()) {
-            throw new Exception("Email already in use");
-        }
-        if (repository.findByUsername(user.getUsername()).isPresent()) {
+    public User registerUser(String username, String email, String password) throws Exception {
+        Optional<User> userOptional = repository.findByUsername(username);
+        Optional<User> emailOptional = repository.findByEmail(email);
+        if (userOptional.isPresent()) {
             throw new Exception("Username already in use");
         }
-        if (Boolean.valueOf(user.getIsAdmin()) == null) {
-            user.setIsAdmin(false);
+        if (emailOptional.isPresent()) {
+            throw new Exception("Email already in use");
         }
-        user.setPassword(crypt.encode(user.getPassword()));
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(crypt.encode(password));
+        user.setIsAdmin(false);
         return repository.save(user);
     }
 
-    public User loginUser(String username, String email, String password) {
+    public User loginUser(String username, String password) {
         Optional<User> userOptional = repository.findByUsername(username);
         if (userOptional.isPresent()) {
             User user = userOptional.get();

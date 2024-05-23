@@ -1,18 +1,24 @@
 package com.example.DenisProj.Users;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public class LoginRequest {
+public class RegisterRequest {
 
     @NotBlank
     private String username;
 
     @NotBlank
+    @Email
+    private String email;
+
+    @NotBlank
     private String password;
 
-    public LoginRequest() {}
+    public RegisterRequest() {}
 
-    public LoginRequest(String username, String password) {
+    public RegisterRequest(String username, String email, String password) {
         this.username = username;
+        this.email = email;
         this.password = password;
     }
 
@@ -22,6 +28,14 @@ public class LoginRequest {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;               
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
