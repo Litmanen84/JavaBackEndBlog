@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import com.example.DenisProj.Users.User;    
 import com.example.DenisProj.Users.UserService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/posts")
 public class PostController {
