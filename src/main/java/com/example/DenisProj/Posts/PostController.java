@@ -7,10 +7,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import com.example.DenisProj.config.CustomUserDetails;
-
 import org.springframework.http.HttpStatus;
+
+import com.example.DenisProj.Users.User;    
+import com.example.DenisProj.Users.UserService;
 
 @RestController
 @RequestMapping("/posts")
@@ -29,18 +29,17 @@ public class PostController {
         return service.getPostById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
     }
+    @Autowired
+    private UserService userService;
 
-    @PostMapping
-    public Post createPost(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Post post) {
-        if (userDetails instanceof CustomUserDetails) {
-            CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
-            if (!customUserDetails.is_admin()) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can create posts");
-            }
+    @PostMapping("/create")
+    public Post createPost(@RequestBody CreatePostRequest request) {
+        User user = userService.findByUsername(request.getUsername());
+        if (user != null && user.getIs_admin()) {
+            return service.createPost(request.getTitle(), request.getContent(), request.getUsername());
         } else {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User details are not of expected type");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can create posts");
         }
-        return service.createPost(post);
     }
 
     @PutMapping("/{id}")

@@ -2,6 +2,8 @@ package com.example.DenisProj.Posts;
 
 import java.util.List;
 import java.util.Optional;
+import com.example.DenisProj.Users.User;
+import com.example.DenisProj.Users.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,9 @@ public class PostService {
     @Autowired
     private PostRepository repository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public List<Post> getAllPosts() {
         return repository.findAll();
     }
@@ -20,10 +25,30 @@ public class PostService {
         return repository.findById(id);
     }
 
-    public Post createPost(Post post) {
+    // public Post createPost(String title, String content, String username) {
+    //     Post post = new Post();
+    //     User user = new User();
+    //     post.setTitle(title);
+    //     post.setContent(content);
+    //     post.user.setUser_id(username);
+    //     return repository.save(post);
+    // }
+
+    public Post createPost(String title, String content, String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (!userOptional.isPresent()) {
+            throw new IllegalArgumentException("User not found for username: " + username);
+        }
+
+        User user = userOptional.get();
+
+        Post post = new Post();
+        post.setUsername(user);
+        post.setTitle(title);
+        post.setContent(content);
+
         return repository.save(post);
     }
-
     public Post updatePost(Long id, Post updatedPost) {
         return repository.findById(id)
                 .map(post -> {
