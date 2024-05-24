@@ -25,12 +25,12 @@ public class CommentService {
     }
 
     public Comment updateComment(Long id, Comment updatedComment) {
-        return repository.findById(id)
-                .map(comment -> {
-                    comment.setContent(updatedComment.getContent());
-                    return repository.save(comment);
-                })
-                .orElseThrow(() -> new CommentNotFoundException(id));
+        Optional<Comment> existingComment = repository.findById(id);
+        if (!existingComment.isPresent()) {
+            throw new CommentNotFoundException("Comment not found with id " + id);
+        }
+        updatedComment.setId(id);
+        return repository.save(updatedComment);
     }
 
     public void deleteComment(Long id) {

@@ -18,7 +18,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User username;
+    private User user_id;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -32,8 +32,8 @@ public class Comment {
 
     public Comment() {}
 
-    public Comment(User username, Post post, String content) {
-        this.username = username;
+    public Comment(User user_id, Post post, String content) {
+        this.user_id = user_id;
         this.post = post;
         this.content = content;
     }
@@ -42,8 +42,8 @@ public class Comment {
         return this.id;
       }
     
-      public User getUsername() {
-        return this.username;
+      public User getUser_id() {
+        return this.user_id;
       }
     
       public Post getPost() {
@@ -58,8 +58,8 @@ public class Comment {
         this.id = id;
       }
     
-      public void setUsername(User username) {
-        this.username = username;
+      public void setUser_id(User user_id) {
+        this.user_id = user_id;
       }
     
       public void setPost(Post post) {
@@ -79,21 +79,21 @@ public class Comment {
         if (!(o instanceof Comment)) return false;
         Comment comment = (Comment) o;
         return Objects.equals(id, comment.id) &&
-                Objects.equals(username, comment.username) &&
+                Objects.equals(user_id, comment.user_id) &&
                 Objects.equals(post, comment.post) &&
                 Objects.equals(content, comment.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, post, content);
+        return Objects.hash(id, user_id, post, content);
     }
 
     @Override
     public String toString() {
         return "Comment{" +
                 "id=" + id +
-                ", user=" + username +
+                ", user=" + user_id +
                 ", post=" + post +
                 ", content='" + content + '\'' +
                 ", createdAt=" + createdAt +

@@ -1,6 +1,7 @@
 package com.example.DenisProj.Users;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,13 +45,18 @@ public class UserService {
         }
     }
 
+    public User findByUsername(String username) {
+        return repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username " + username));
+    }
+
     public Optional<User> findByEmail(String email) {
         return repository.findByEmail(email);
     }
 
-    public Optional<User> findByUsername(String username) {
-        return repository.findByUsername(username);
-    }
+    // public Optional<User> findByUsername(String username) {
+    //     return repository.findByUsername(username);
+    // }
 
     public User saveUser(User user) {
         return repository.save(user);
