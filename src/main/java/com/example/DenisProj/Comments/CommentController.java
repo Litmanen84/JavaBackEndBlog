@@ -2,6 +2,7 @@ package com.example.DenisProj.Comments;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import com.example.DenisProj.Users.UserService;
 import com.example.DenisProj.Users.User;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
