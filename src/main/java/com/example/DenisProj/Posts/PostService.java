@@ -25,30 +25,22 @@ public class PostService {
         return repository.findById(id);
     }
 
-    // public Post createPost(String title, String content, String username) {
-    //     Post post = new Post();
-    //     User user = new User();
-    //     post.setTitle(title);
-    //     post.setContent(content);
-    //     post.user.setUser_id(username);
-    //     return repository.save(post);
-    // }
-
     public Post createPost(String title, String content, String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (!userOptional.isPresent()) {
             throw new IllegalArgumentException("User not found for username: " + username);
         }
-
+    
         User user = userOptional.get();
-
+    
         Post post = new Post();
-        post.setUsername(user);
+        post.setUserId(user.getId());
         post.setTitle(title);
         post.setContent(content);
-
+    
         return repository.save(post);
     }
+
     public Post updatePost(Long id, Post updatedPost) {
         return repository.findById(id)
                 .map(post -> {
