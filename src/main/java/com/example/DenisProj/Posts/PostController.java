@@ -36,11 +36,12 @@ public class PostController {
     public Post createPost(@RequestBody CreatePostRequest request) {
         User user = userService.findByUsername(request.getUsername());
         if (user != null && user.getIs_admin()) {
-            return service.createPost(request.getTitle(), request.getContent(), request.getUsername());
+            return service.createPost(request.getTitle(), request.getContent(), user.getId());
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can create posts");
         }
     }
+
 
     @PutMapping("/{id}")
     public Post updatePost(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id, @RequestBody Post updatedPost) {

@@ -25,10 +25,10 @@ public class PostService {
         return repository.findById(id);
     }
 
-    public Post createPost(String title, String content, String username) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
+    public Post createPost(String title, String content, Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
         if (!userOptional.isPresent()) {
-            throw new IllegalArgumentException("User not found for username: " + username);
+            throw new IllegalArgumentException("User not found for userId: " + userId);
         }
     
         User user = userOptional.get();
