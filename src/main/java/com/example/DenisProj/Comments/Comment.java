@@ -9,6 +9,7 @@ import com.example.DenisProj.Users.User;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "comments")
 public class Comment {
 
     @Id
