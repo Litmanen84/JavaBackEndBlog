@@ -44,7 +44,6 @@ public class PostController {
         }
     }
 
-
     @PutMapping("/{id}")
     public Post updatePost(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id, @RequestBody Post updatedPost) {
         if (!userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
