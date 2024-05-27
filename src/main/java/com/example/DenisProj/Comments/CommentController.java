@@ -2,7 +2,6 @@ package com.example.DenisProj.Comments;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +10,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 import com.example.DenisProj.Users.UserService;
 import com.example.DenisProj.Users.User;
+import com.example.DenisProj.Posts.Post;
+import com.example.DenisProj.Posts.PostService;
 
 @CrossOrigin
 @RestController
@@ -22,6 +23,9 @@ public class CommentController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PostService postService;
 
     @GetMapping
     public List<Comment> getAllComments() {
@@ -35,10 +39,16 @@ public class CommentController {
     }
 
     @PostMapping
-    public Comment createComment(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Comment comment) {
-        User user = userService.findByUsername(userDetails.getUsername());
-        comment.setUser_id(user);
-        return service.createComment(comment);
+    public Comment createComment(@RequestBody CreateCommentRequest request) {
+        User user = userService.findByUsername(request.getUsername());
+        Post post = postService.getPostById(request.getPostId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
+
+        if (user != null && post != null) {
+            return service.createComment(request.getComment(), user.getId(), post.getId());
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You should login to create a comment");
+        }
     }
 
     @PutMapping("/{id}")
@@ -48,12 +58,12 @@ public class CommentController {
 
         User user = userService.findByUsername(userDetails.getUsername());
 
-        if (!existingComment.getUser_id().equals(user)) {
+        if (!existingComment.getUser().equals(user)) {
             throw new UnauthorizedException("You are not authorized to update this comment");
         }
 
         updatedComment.setId(id);
-        updatedComment.setUser_id(user); 
+        updatedComment.setUser(user);
         return service.updateComment(id, updatedComment);
     }
 
@@ -64,7 +74,7 @@ public class CommentController {
 
         User user = userService.findByUsername(userDetails.getUsername());
 
-        if (!existingComment.getUser_id().equals(user) && !userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+        if (!existingComment.getUser().equals(user) && userDetails.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to delete this comment");
         }
 

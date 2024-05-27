@@ -3,10 +3,10 @@ package com.example.DenisProj.Comments;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import com.example.DenisProj.Posts.Post;
-import com.example.DenisProj.Users.User;
-
 import jakarta.persistence.*;
+
+import com.example.DenisProj.Users.User;
+import com.example.DenisProj.Posts.Post;
 
 @Entity
 @Table(name = "comments")
@@ -17,11 +17,11 @@ public class Comment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user_id;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     @Column(nullable = false)
@@ -32,46 +32,50 @@ public class Comment {
 
     public Comment() {}
 
-    public Comment(User user_id, Post post, String content) {
-        this.user_id = user_id;
+    public Comment(User user, Post post, String content) {
+        this.user = user;
         this.post = post;
         this.content = content;
     }
 
     public Long getId() {
         return this.id;
-      }
-    
-      public User getUser_id() {
-        return this.user_id;
-      }
-    
-      public Post getPost() {
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public Post getPost() {
         return this.post;
-      }
-    
-      public String getContent() {
+    }
+
+    public String getContent() {
         return this.content;
-      }
-    
-      public void setId(Long id) {
+    }
+
+    public void setId(Long id) {
         this.id = id;
-      }
-    
-      public void setUser_id(User user_id) {
-        this.user_id = user_id;
-      }
-    
-      public void setPost(Post post) {
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setPost(Post post) {
         this.post = post;
-      }
-    
-      public void setContent(String content) {
+    }
+
+    public void setContent(String content) {
         if (content == null || content.isEmpty()) {
             throw new IllegalArgumentException("Comment is not valid");
         }
         this.content = content;
     }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+      this.createdAt = createdAt;
+  }
 
     @Override
     public boolean equals(Object o) {
@@ -79,21 +83,21 @@ public class Comment {
         if (!(o instanceof Comment)) return false;
         Comment comment = (Comment) o;
         return Objects.equals(id, comment.id) &&
-                Objects.equals(user_id, comment.user_id) &&
+                Objects.equals(user, comment.user) &&
                 Objects.equals(post, comment.post) &&
                 Objects.equals(content, comment.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user_id, post, content);
+        return Objects.hash(id, user, post, content);
     }
 
     @Override
     public String toString() {
         return "Comment{" +
                 "id=" + id +
-                ", user=" + user_id +
+                ", user=" + user +
                 ", post=" + post +
                 ", content='" + content + '\'' +
                 ", createdAt=" + createdAt +
