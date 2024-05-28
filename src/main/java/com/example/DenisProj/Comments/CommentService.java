@@ -28,6 +28,10 @@ public class CommentService {
         return repository.findAll();
     }
 
+    public List<Comment> getCommentsByPostId(Long postId) {
+        return repository.findByPostId(postId);
+    }
+
     public Optional<Comment> getCommentById(Long id) {
         return repository.findById(id);
     }
