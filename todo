@@ -1,11 +1,12 @@
 Funzionalità di Login con username O email
-Cors
-Autorizzazione: Gestire i ruoli degli utenti (es. amministratori e utenti normali) e le relative autorizzazioni.
+
+Autenticazione/Sicurezza (Authentication Principal)
+Optional
+
 Profili Utente: Aggiungere funzionalità per visualizzare e modificare i profili utente.
 
-4. Sicurezza e Validazione
-Sicurezza: Configurare la sicurezza per proteggere le API (es. Spring Security).
-Validazione: Aggiungere validazione per i dati degli utenti, dei post e dei commenti.
+Permettere a utenti creatori ED Admin di modificare/cancellare commenti
+
 5. Test
 Test Unitari: Scrivere test unitari per le singole componenti (controller, servizi, repository).
 Test di Integrazione: Scrivere test di integrazione per verificare il funzionamento delle diverse parti dell'applicazione insieme.

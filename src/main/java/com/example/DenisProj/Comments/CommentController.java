@@ -1,14 +1,10 @@
 package com.example.DenisProj.Comments;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import com.example.DenisProj.Users.UserService;
 import com.example.DenisProj.Users.User;
@@ -65,16 +61,13 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteComment(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {
+    public void deleteComment(@PathVariable Long id, @RequestBody DeleteCommentRequest request) {
+        User user = userService.findByUsername(request.getUsername());    
         Comment existingComment = service.getCommentById(id)
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found with id " + id));
-
-        User user = userService.findByUsername(userDetails.getUsername());
-
-        if (!existingComment.getUser().equals(user) && userDetails.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to delete this comment");
-        }
-
+        if (!existingComment.getUser().equals(user) && !user.getIs_admin()) {
+                    throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to delete this comment");
+                }
         service.deleteComment(id);
     }
 }
