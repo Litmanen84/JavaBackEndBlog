@@ -2,6 +2,7 @@ Funzionalità di Login con username O email
 
 Autenticazione/Sicurezza (Authentication Principal)
 Optional
+JPA repository
 
 Profili Utente: Aggiungere funzionalità per visualizzare e modificare i profili utente.
 
