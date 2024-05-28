@@ -29,7 +29,7 @@ public class CommentController {
     public List<Comment> getAllComments() {
         return service.getAllComments();
     }
-
+    @CrossOrigin
     @GetMapping("/post/{postId}")
     public List<Comment> getCommentsByPostId(@PathVariable Long postId) {
         return service.getCommentsByPostId(postId);
@@ -53,7 +53,7 @@ public class CommentController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You should login to create a comment");
         }
     }
-
+    @CrossOrigin
     @PutMapping("/{id}")
     public Comment updateComment(@PathVariable Long id, @RequestBody UpdateCommentRequest request) {
         User user = userService.findByUsername(request.getUsername());
@@ -64,7 +64,7 @@ public class CommentController {
         }
         return service.updateComment(id, request.getUpdatedComment());
     }
-
+    @CrossOrigin
     @DeleteMapping("/{id}")
     public void deleteComment(@PathVariable Long id, @RequestBody DeleteCommentRequest request) {
         User user = userService.findByUsername(request.getUsername());    
