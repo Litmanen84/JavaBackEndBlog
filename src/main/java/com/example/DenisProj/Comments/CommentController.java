@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import com.example.DenisProj.Users.UserService;
 import com.example.DenisProj.Users.User;
 import com.example.DenisProj.Posts.Post;
@@ -52,19 +54,14 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public Comment updateComment(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id, @RequestBody Comment updatedComment) {
+    public Comment updateComment(@PathVariable Long id, @RequestBody UpdateCommentRequest request) {
+        User user = userService.findByUsername(request.getUsername());
         Comment existingComment = service.getCommentById(id)
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found with id " + id));
-
-        User user = userService.findByUsername(userDetails.getUsername());
-
         if (!existingComment.getUser().equals(user)) {
             throw new UnauthorizedException("You are not authorized to update this comment");
         }
-
-        updatedComment.setId(id);
-        updatedComment.setUser(user);
-        return service.updateComment(id, updatedComment);
+        return service.updateComment(id, request.getUpdatedComment());
     }
 
     @DeleteMapping("/{id}")

@@ -48,14 +48,14 @@ public class CommentService {
         return repository.save(newComment);
     }
 
-    public Comment updateComment(Long id, Comment updatedComment) {
+    public Comment updateComment(Long id, String updatedComment) {
         Optional<Comment> existingComment = repository.findById(id);
         if (!existingComment.isPresent()) {
             throw new CommentNotFoundException("Comment not found with id " + id);
         }
 
         Comment commentToUpdate = existingComment.get();
-        commentToUpdate.setContent(updatedComment.getContent());
+        commentToUpdate.setContent(updatedComment);
         commentToUpdate.setCreatedAt(LocalDateTime.now());
 
         return repository.save(commentToUpdate);
