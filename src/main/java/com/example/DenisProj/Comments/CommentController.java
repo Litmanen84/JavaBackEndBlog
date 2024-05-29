@@ -11,7 +11,7 @@ import com.example.DenisProj.Users.User;
 import com.example.DenisProj.Posts.Post;
 import com.example.DenisProj.Posts.PostService; 
 
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+// @CrossOrigin(origins = "http://127.0.0.1:5173", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}, allowCredentials = "false")
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
@@ -53,7 +53,7 @@ public class CommentController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You should login to create a comment");
         }
     }
-    @CrossOrigin
+
     @PutMapping("/{id}")
     public Comment updateComment(@PathVariable Long id, @RequestBody UpdateCommentRequest request) {
         User user = userService.findByUsername(request.getUsername());
@@ -64,7 +64,7 @@ public class CommentController {
         }
         return service.updateComment(id, request.getUpdatedComment());
     }
-    @CrossOrigin
+ 
     @DeleteMapping("/{id}")
     public void deleteComment(@PathVariable Long id, @RequestBody DeleteCommentRequest request) {
         User user = userService.findByUsername(request.getUsername());    
