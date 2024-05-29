@@ -3,6 +3,8 @@ package com.example.DenisProj.Posts;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import javax.validation.constraints.NotBlank;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -17,9 +19,11 @@ public class Post {
     @Column(name = "user_id")
     private Long userId;
 
+    @NotBlank(message = "Title is mandatory")
     @Column(nullable = false)
     private String title;
 
+    @NotBlank(message = "Content is mandatory")
     @Column(nullable = false)
     private String content;
 

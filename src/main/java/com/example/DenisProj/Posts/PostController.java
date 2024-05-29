@@ -1,25 +1,27 @@
 package com.example.DenisProj.Posts;
 
 import java.util.List;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-
+import com.example.DenisProj.Comments.UnauthorizedException;
 import com.example.DenisProj.Users.User;    
 import com.example.DenisProj.Users.UserService;
 
-@CrossOrigin
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/posts")
 public class PostController {
 
     @Autowired
     private PostService service;
+
+    @Autowired
+    private UserService userService;
+
 
     @GetMapping
     public List<Post> getAllPosts() {
@@ -31,8 +33,6 @@ public class PostController {
         return service.getPostById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
     }
-    @Autowired
-    private UserService userService;
 
     @PostMapping("/create")
     public Post createPost(@RequestBody CreatePostRequest request) {
@@ -45,18 +45,27 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public Post updatePost(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id, @RequestBody Post updatedPost) {
-        if (!userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can update posts");
+    public void updatePost(@PathVariable Long id, @RequestBody UpdatePostRequest request) {
+        User user = userService.findByUsername(request.getUsername());
+        Post existingPost = service.getPostById(id)
+                .orElseThrow(() -> new PostNotFoundException(id));
+        if (user != null && existingPost != null && user.getIs_admin()) {
+            existingPost.setContent(request.getUpdatedPost());
+            service.updatePost(id, existingPost);
         }
-        return service.updatePost(id, updatedPost);
+        else {
+            throw new UnauthorizedException("User is not authorized to update this post");
+        }
     }
 
+
     @DeleteMapping("/{id}")
-    public void deletePost(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {
-        if (!userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+    public void deletePost(@PathVariable Long id, @RequestBody DeletePostRequest request) {
+        User user = userService.findByUsername(request.getUsername());
+        if (user != null && user.getIs_admin()) {
+        service.deletePost(id);
+        } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can delete posts");
         }
-        service.deletePost(id);
     }
 }

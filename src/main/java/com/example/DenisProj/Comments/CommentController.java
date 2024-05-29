@@ -1,18 +1,17 @@
 package com.example.DenisProj.Comments;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-
 import com.example.DenisProj.Users.UserService;
 import com.example.DenisProj.Users.User;
 import com.example.DenisProj.Posts.Post;
 import com.example.DenisProj.Posts.PostService;
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
