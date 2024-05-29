@@ -9,9 +9,9 @@ import org.springframework.http.HttpStatus;
 import com.example.DenisProj.Users.UserService;
 import com.example.DenisProj.Users.User;
 import com.example.DenisProj.Posts.Post;
-import com.example.DenisProj.Posts.PostService;
+import com.example.DenisProj.Posts.PostService; 
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RestController
 @RequestMapping("/comments")
 public class CommentController {

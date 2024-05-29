@@ -11,7 +11,7 @@ import com.example.DenisProj.Users.User;
 import com.example.DenisProj.Users.UserService;
 
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RestController
 @RequestMapping("/posts")
 public class PostController {
