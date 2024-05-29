@@ -42,7 +42,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -55,7 +54,6 @@ public class SecurityConfig {
         return source;
     }
 }
-
 // package com.example.DenisProj.config;
 
 // import org.springframework.context.annotation.Bean;
