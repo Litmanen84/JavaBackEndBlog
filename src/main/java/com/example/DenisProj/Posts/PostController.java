@@ -1,7 +1,7 @@
 package com.example.DenisProj.Posts;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,7 +11,7 @@ import com.example.DenisProj.Users.User;
 import com.example.DenisProj.Users.UserService;
 
 
-@CrossOrigin(origins = "http://127.0.0.1:5173", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}, allowCredentials = "false")
+@CrossOrigin(origins = "http://127.0.0.1:5173", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}, allowCredentials = "false")
 @RestController
 @RequestMapping("/posts")
 public class PostController {
