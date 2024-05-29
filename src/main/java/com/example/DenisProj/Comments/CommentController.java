@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.example.DenisProj.Users.UserService;
 import com.example.DenisProj.Users.User;
@@ -29,10 +30,10 @@ public class CommentController {
     public List<Comment> getAllComments() {
         return service.getAllComments();
     }
-    @CrossOrigin
-    @GetMapping("/post/{postId}")
-    public List<Comment> getCommentsByPostId(@PathVariable Long postId) {
-        return service.getCommentsByPostId(postId);
+
+    @GetMapping("/post/{id}")
+    public List<Comment> getCommentsByPostId(@PathVariable Long id) {
+        return service.getCommentsByPostId(id);
     }
 
     @GetMapping("/{id}")
