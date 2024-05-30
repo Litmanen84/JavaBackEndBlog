@@ -48,21 +48,18 @@ public class PostController {
         User user = userService.findByUsername(request.getUsername());
         Post existingPost = service.getPostById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
-        if (user != null && existingPost != null && user.getIs_admin()) {
-            existingPost.setContent(request.getUpdatedPost());
-            service.updatePost(id, existingPost);
-        }
-        else {
+        if (user != null && user.getIs_admin()) {
+            service.updatePost(id, request.getTitle(), request.getContent());
+        } else {
             throw new UnauthorizedException("User is not authorized to update this post");
         }
     }
-
 
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable Long id, @RequestBody DeletePostRequest request) {
         User user = userService.findByUsername(request.getUsername());
         if (user != null && user.getIs_admin()) {
-        service.deletePost(id);
+            service.deletePost(id);
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can delete posts");
         }

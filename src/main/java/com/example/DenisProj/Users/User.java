@@ -32,7 +32,7 @@ public class User implements UserDetails{
   @Column(nullable = false)
   private boolean is_admin;
 
-  User() {}
+  public User() {}
 
   User(String username, String password, String email, boolean is_admin) {
 

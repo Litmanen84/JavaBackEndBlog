@@ -41,17 +41,21 @@ public class PostService {
         return repository.save(post);
     }
 
-    public Post updatePost(Long id, Post updatedPost) {
+    public Post updatePost(Long id, String title, String content) {
         return repository.findById(id)
                 .map(post -> {
-                    post.setTitle(updatedPost.getTitle());
-                    post.setContent(updatedPost.getContent());
+                    post.setTitle(title);
+                    post.setContent(content);
                     return repository.save(post);
                 })
                 .orElseThrow(() -> new PostNotFoundException(id));
     }
 
     public void deletePost(Long id) {
-        repository.deleteById(id);
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new PostNotFoundException(id);
+        }
     }
 }
