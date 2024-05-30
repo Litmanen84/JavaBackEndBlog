@@ -16,59 +16,112 @@ API Documentation: Usare strumenti come Swagger per documentare le API.
 README: Aggiornare il file README.md con istruzioni per il setup e l'uso del progetto.
 Struttura Generale delle Classi
 
+package com.example.DenisProj.Comments;
 
-CustomUserDetails
-package com.example.DenisProj.config;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-
-import java.util.Collection;
-
-public class CustomUserDetails extends User {
-    private final boolean is_admin;
-
-    public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities, boolean is_admin) {
-        super(username, password, authorities);
-        this.is_admin = is_admin;
-    }
-
-    public boolean is_admin() {
-        return is_admin;
-    }
-}
-
-CustomUserDetailsService
-package com.example.DenisProj.config;
-
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-
+import java.time.LocalDateTime;
+import java.util.Objects;
+import jakarta.persistence.*;
 import com.example.DenisProj.Users.User;
-import com.example.DenisProj.Users.UserRepository;
+import com.example.DenisProj.Posts.Post;
 
-@Service
-public class CustomUserDetailsService implements UserDetailsService {
+@Entity
+@Table(name = "comments")
+public class Comment {
 
-    private final UserRepository userRepository;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long id;
 
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    public User user;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id", nullable = false)
+    public Post post;
+
+    @Column(nullable = false)
+    public String content;
+
+    @Column(nullable = false)
+    public LocalDateTime createdAt = LocalDateTime.now();
+
+    public Comment() {}
+
+    public Comment(User user, Post post, String content) {
+        this.user = user;
+        this.post = post;
+        this.content = content;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public Post getPost() {
+        return this.post;
+    }
+
+    public String getContent() {
+        return this.content;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public void setContent(String content) {
+        if (content == null || content.isEmpty()) {
+            throw new IllegalArgumentException("Comment is not valid");
+        }
+        this.content = content;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Comment)) return false;
+        Comment comment = (Comment) o;
+        return Objects.equals(id, comment.id) &&
+                Objects.equals(user, comment.user) &&
+                Objects.equals(post, comment.post) &&
+                Objects.equals(content, comment.content);
+    }
 
-        return new CustomUserDetails(user.getEmail(), user.getPassword(), user.getAuthorities(), user.getIs_admin());
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, post, content);
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", user=" + user +
+                ", post=" + post +
+                ", content='" + content + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }
 
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }

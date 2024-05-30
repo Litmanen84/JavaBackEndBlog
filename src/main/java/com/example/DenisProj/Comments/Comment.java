@@ -2,9 +2,7 @@ package com.example.DenisProj.Comments;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-
 import jakarta.persistence.*;
-
 import com.example.DenisProj.Users.User;
 import com.example.DenisProj.Posts.Post;
 
@@ -14,21 +12,22 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "comment_id")
+    public Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    public User user;
 
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
+    public Post post;
 
     @Column(nullable = false)
-    private String content;
+    public String content;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    public LocalDateTime createdAt = LocalDateTime.now();
 
     public Comment() {}
 
