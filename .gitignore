@@ -1,5 +1,5 @@
 HELP.md
-todo
+todo.todo
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -32,3 +32,4 @@ build/
 
 ### VS Code ###
 .vscode/
+node_modules
