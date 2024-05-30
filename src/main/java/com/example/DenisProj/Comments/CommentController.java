@@ -57,10 +57,11 @@ public class CommentController {
         User user = userService.findByUsername(request.getUsername());
         Comment existingComment = service.getCommentById(id)
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found with id " + id));
-        if (!existingComment.getUser().equals(user)) {
+        if (existingComment.getUser().equals(user) || user.getIs_admin()) {
+            return service.updateComment(id, request.getUpdatedComment());
+        } else {
             throw new UnauthorizedException("You are not authorized to update this comment");
         }
-        return service.updateComment(id, request.getUpdatedComment());
     }
  
     @DeleteMapping("/{id}")
@@ -68,9 +69,10 @@ public class CommentController {
         User user = userService.findByUsername(request.getUsername());    
         Comment existingComment = service.getCommentById(id)
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found with id " + id));
-        if (!existingComment.getUser().equals(user) && !user.getIs_admin()) {
-                    throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to delete this comment");
-                }
-        service.deleteComment(id);
+        if (existingComment.getUser().equals(user) || user.getIs_admin()) {
+            service.deleteComment(id);       
+        } else {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to delete this comment");
+            }
     }
 }
