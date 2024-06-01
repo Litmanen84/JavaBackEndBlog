@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.stream.Collectors;
 import com.example.DenisProj.Users.User;
 import com.example.DenisProj.Users.UserRepository;
 import com.example.DenisProj.Posts.Post;
@@ -28,9 +28,21 @@ public class CommentService {
         return repository.findAll();
     }
 
-    public List<Comment> getCommentsByPostId(Long id) {
-        return repository.findByPostId(id);
+    
+
+    public List<CommentDTO> getCommentsByPostId(Long id) {
+        List<Comment> comments = repository.findByPostId(id);
+        return comments.stream()
+                .map(comment -> new CommentDTO(
+                        comment.getId(),
+                        comment.getContent(),
+                        comment.getUser().getUsername(),
+                        comment.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
     }
+
+
 
     public Optional<Comment> getCommentById(Long id) {
         return repository.findById(id);

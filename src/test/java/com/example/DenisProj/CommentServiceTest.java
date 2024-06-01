@@ -2,6 +2,7 @@ package com.example.DenisProj;
 
 import java.util.List;
 import com.example.DenisProj.Comments.Comment;
+import com.example.DenisProj.Comments.CommentDTO;
 import com.example.DenisProj.Users.User;
 import com.example.DenisProj.Users.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -37,12 +38,22 @@ public class CommentServiceTest {
     @Test
     public void testGetCommentsByPostId() {
         Long postId = 1L;
-        List<Comment> comments = Arrays.asList(new Comment());
+        
+        User user = new User();
+        user.setUsername("testuser");
+        Post post = new Post();
+        Comment comment = new Comment(user, post, "Test content");
+        comment.setId(1L);
+
+        List<Comment> comments = Arrays.asList(comment);
         when(repository.findByPostId(postId)).thenReturn(comments);
 
-        List<Comment> result = service.getCommentsByPostId(postId);
+        List<CommentDTO> result = service.getCommentsByPostId(postId);
+        
         assertNotNull(result);
         assertEquals(1, result.size());
+        assertEquals("testuser", result.get(0).getUsername());
+        assertEquals("Test content", result.get(0).getContent());
     }
 
     @Test
